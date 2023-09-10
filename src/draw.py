@@ -1,8 +1,6 @@
 import pygame as pg
 import input
 
-top_right = 303
-
 def draw(w, clock, font):
     fill(w)
 
@@ -29,4 +27,5 @@ def draw_fps(w, clock, font):
             fps = font.render(str(int(clock.get_fps())), False, "green")
         else:
             fps = font.render(str(int(clock.get_fps())), False, "red")
+        top_right = 303
         w.render.blit(fps, (top_right, 0))
