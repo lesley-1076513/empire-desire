@@ -1,0 +1,17 @@
+outhou
+
+fork deze repository
+git clone je fork
+git status
+git add .
+git commit -m "bericht"
+git push
+create pr op github
+
+powershell commands:
+
+ls - list files
+cd - change dir
+mkdir - make dir
+ni - new item
+explorer . - deze map openen met de punt
