@@ -22,7 +22,7 @@ def get_input():
         game.char.direction = character.Direction.RIGHT
         game.char.state = character.State.MOVING
         pos.x += 3
-    elif keys[pg.K_RETURN]:
+    elif keys[pg.K_a]:
         game.char.state = character.State.ATTACKING
     else:
         game.char.state = character.State.IDLE

@@ -47,7 +47,7 @@ def draw_char(w):
                             game.char.attack_frame = 0
                     rect = pg.Rect(game.char.attack_frame, 80, 16, 16)
                 case _:
-                    if game.char.attack_frame >= 16: # error checking
+                    if game.char.attack_frame > 16: # error checking
                         game.char.attack_frame = 16
                     elif game.char.attack_frame < 16:
                         if game.char.attack_counter % game.char.anim_speed == 0:
