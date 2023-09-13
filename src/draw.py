@@ -1,6 +1,7 @@
 import pygame as pg
 import input
 import game
+import character
 
 def draw(w, clock, font):
     fill(w)
@@ -19,20 +20,51 @@ def blit(w):
     pg.display.flip()
 
 def draw_char(w):
-    game.char.counter += 1
+    match game.char.state:
+        case character.State.IDLE:
+            game.char.counter = 0
+            game.char.attack_counter = 0
+            game.char.current_frame = 0
+            rect = pg.Rect(game.char.current_frame, game.char.direction.value * 16, 16, 16)
+        case character.State.MOVING:
+            game.char.counter += 1
+            if game.char.current_frame < 16 * 4:
+                if game.char.counter % game.char.anim_speed == 0:
+                    game.char.current_frame += 16
+            else:
+                if game.char.counter % game.char.anim_speed == 0:
+                    game.char.current_frame = 0
+            rect = pg.Rect(game.char.current_frame, game.char.direction.value * 16, 16, 16)
+        case character.State.ATTACKING:
+            game.char.attack_counter += 1
+            match game.char.direction:
+                case character.Direction.DOWN:
+                    if game.char.attack_frame < 16 * 2:
+                        if game.char.attack_counter % game.char.anim_speed == 0:
+                            game.char.attack_frame += 16
+                    else:
+                        if game.char.attack_counter % game.char.anim_speed == 0:
+                            game.char.attack_frame = 0
+                    rect = pg.Rect(game.char.attack_frame, 80, 16, 16)
+                case _:
+                    if game.char.attack_frame >= 16: # error checking
+                        game.char.attack_frame = 16
+                    elif game.char.attack_frame < 16:
+                        if game.char.attack_counter % game.char.anim_speed == 0:
+                            game.char.attack_frame += 16
+                    else:
+                        if game.char.attack_counter % game.char.anim_speed == 0:
+                            game.char.attack_frame = 0
+                            
+                    match game.char.direction:
+                        case character.Direction.RIGHT:
+                            rect = pg.Rect(48, 64 + game.char.attack_frame, 16, 16)
+                        case character.Direction.UP:
+                            rect = pg.Rect(64, 64 + game.char.attack_frame, 16, 16)
+                        case character.Direction.LEFT:
+                            rect = pg.Rect(80, 64 + game.char.attack_frame, 16, 16)
 
-    if game.char.moving:
-        if game.char.current_frame < 16 * 4:
-            if game.char.counter % 5 == 0:
-                game.char.current_frame += 16
-        else:
-            if game.char.counter % 5 == 0:
-                game.char.current_frame = 0
-    else:
-        game.char.current_frame = 0
-        
     AxemanSheet = pg.image.load("gfx/AxemanCyan.png").convert_alpha()
-    rect = pg.Rect(game.char.current_frame, game.char.direction.value * 16, 16, 16)
     char = AxemanSheet.subsurface(rect)
     w.render.blit(char, input.pos)
 
