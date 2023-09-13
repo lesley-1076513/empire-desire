@@ -3,6 +3,7 @@ import pygame as pg
 import window
 import input
 import draw
+import character
 
 class GameState(Enum):
     TITLE = 1
@@ -15,10 +16,11 @@ def init():
     clock = pg.time.Clock()
     font = pg.font.Font("gfx/alagard.ttf", w.font_size)
     state = GameState(GameState.GAME)
+    char = character.Character()
     pg.display.set_caption(w.title)
-    return font, clock, w, state
+    return font, clock, w, state, char
 
-font, clock, w, state = init()
+font, clock, w, state, char = init()
 
 def run():
     while w.running:

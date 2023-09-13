@@ -1,5 +1,6 @@
 import pygame as pg
 import input
+import game
 
 def draw(w, clock, font):
     fill(w)
@@ -18,7 +19,21 @@ def blit(w):
     pg.display.flip()
 
 def draw_char(w):
-    char = pg.image.load("gfx/AxemanCyan.png").convert_alpha()
+    game.char.counter += 1
+
+    if game.char.moving:
+        if game.char.current_frame < 16 * 4:
+            if game.char.counter % 5 == 0:
+                game.char.current_frame += 16
+        else:
+            if game.char.counter % 5 == 0:
+                game.char.current_frame = 0
+    else:
+        game.char.current_frame = 0
+        
+    AxemanSheet = pg.image.load("gfx/AxemanCyan.png").convert_alpha()
+    rect = pg.Rect(game.char.current_frame, game.char.direction.value * 16, 16, 16)
+    char = AxemanSheet.subsurface(rect)
     w.render.blit(char, input.pos)
 
 def draw_fps(w, clock, font):
